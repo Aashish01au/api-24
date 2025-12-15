@@ -1,5 +1,6 @@
 ### EXPRESS APPLICATION API-24 :-
 # Permission in Application = 777
+------------------------- [ ---------------------------- ] -----------------------------------
 dwrx(Delete Write Read Execute)
     7 = dwrx
     6 = wrx
@@ -99,8 +100,15 @@ let readData= fs.readFileSync(fileName,{encoding:"utf8"})
 readData= JSON.parse(readData)
 //console.log(typeof readData)
 console.log(readData)
-
-
+------------------------- [ ---------------------------- ] -----------------------------------
+(request,response)=>{
+ // Server Application Express Application
+//  console.log(request)
+//  response.end("Hello World")
+}
+------------------------- [ ---------------------------- ] -----------------------------------
+------------------------- [ ---------------------------- ] -----------------------------------
+------------------------- [ ---------------------------- ] -----------------------------------
 ## HTPP
 ## REST API 
 ## MVC PATTERN
@@ -109,10 +117,17 @@ console.log(readData)
 ## NODE API SERVER :-
     - API ==> APPLICATION PROGRAMMING LANGUAGE
 
-a. Request
+# a. Request
         - Method
         - endpoint
-            - protocol://url/params?queryString
+            - protocol://domainLink:portNo/params?queryString
+            # ports  : ports no. --> ports range --> 0-2^16-1 --> 0-65535
+                http : 80
+                https: 443 
+                ftp  : 21
+                sftp : 22
+                smtp : 25
+
         - data
             - Url
                 - params
@@ -125,12 +140,49 @@ a. Request
             
             - header
                 - json - {key:value}
+
+## Ways for connecting Server :- 
 - http package
     - node server enviroment 
+- express package
+    - Server program :-
+- http package
     - express application ( Ssrer Side)
     - scoket
     - graph
+    - smtp
 
-- express package
-    - Server program :-
+
+# SDLC Process [ Software Development Life Cycle]
+    - Information gathering
+## Ecommerce     
+    - User
+    - Products
+    - Brands
+    - Category 
+    - Order
+    - Review 
+    - Blogs
+    - Transaction
+
+### Monolithic PATTERN
+### MicroServices PATTERN
+## Design MVC PATTERN :-
+    - Model
+        - DataBase Operation
+    - View 
+        - Presentation
+    - controller
+        - Business logic
+
+i.e :-
+    url ==> Login template
+    SERVER :-
+    Route ---> Controller ---> Model ---> DB Server
+                    ---> View Controller
+    Close Route ---> Middleware ---> Controller ---> Services / Repository ---> Model ---> DB Server
+                    ---> View Controller
     
+
+### EXPRESS JS :-
+
