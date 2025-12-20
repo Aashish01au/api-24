@@ -155,15 +155,44 @@ console.log(readData)
 
 # SDLC Process [ Software Development Life Cycle]
     - Information gathering
-## Ecommerce     
+## Ecommerce 
+    - Banner    
+        - CRUD
+        - detail by id
+        - list all 
+        - list by home
     - User
+        - CRUD
+        - detail by id
+        - list all 
+        - list all based on roles
     - Products
+        - CRUD
+        - detail by id
+        - list all filter
+        - list all baned on saller
     - Brands
-    - Category 
+        - CRUD
+        - detail by id
+        - list all by brands
+        - product list
+    - Category
+        - CRUD 
+
     - Order
+        - CRUD
     - Review 
+        - CRUD
     - Blogs
+        - CRUD
     - Transaction
+        - CRUD
+    - Offer
+        - CRUD
+    - Chat online
+        - CRUD
+    - Multi User Access
+        - CRUD
 
 ### Monolithic PATTERN
 ### MicroServices PATTERN
@@ -185,4 +214,41 @@ i.e :-
     
 
 ### EXPRESS JS :-
+    .use("url",callBackFunction(request,response))
+
+### REST API :-
+    CRUD
+        - Create
+            - post("url",callBackFunction(request,response))
+        - Read
+            //url
+            data
+            - get("url",callBackFunction(request,response))
+        - Update
+            - put("url",callBackFunction(request,response)), patch("url",callBackFunction(request,response))
+        - Delete
+            - delete("url",callBackFunction(request,response))
+
+## Project Module :-
+## Auth(Authenticate) And Authorization :-
+    - Register
+        - post request ==> endpoint /register
+    - Verify Token / OTP
+        - get request ==> endpoint /verify-token/:otp
+        or otp verify
+        - post request ==> endpoint /verify-otp
+    - User Activate
+        - post request ==> endpint /user-activate
+    - Forget Password 
+        - post request ==> endpoint /forget-password
+    - Reset Password
+        - post request ==> endpoint /reset-password
+    - Login // Auth(Authenticate)
+        - post request ==> endpoint /login
+    - Logout
+        - get request ==> endpoint /logout
+    - Profile Access
+        - get request ==> endpoint /me
+    - User Update
+        - put request ==> endpoint /user-update/:userId
 
