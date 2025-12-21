@@ -117,6 +117,15 @@ console.log(readData)
 ## NODE API SERVER :-
     - API ==> APPLICATION PROGRAMMING LANGUAGE
 
+## RESPONSE FORMAT :-
+    - should be in json format
+    - the json should contain :-
+       ```{
+            result : <data type any>
+            message: <String>
+            meta : null | object
+        }```
+
 # a. Request
         - Method
         - endpoint
@@ -216,7 +225,21 @@ i.e :-
 ### EXPRESS JS :-
     .use("url",callBackFunction(request,response))
 
-### REST API :-
+### MIDDLEWARE :-
+- Every function/actions mounting on express's app is a middleware
+- At least contains 3 arguments or else 4
+    - first : always request or error object
+    - second : always response or request
+    - third : always next(cb/ callback function) or response
+    - fourth : nothing or next scope(cb)
+
+    e.g (req,res,next)
+    or
+    (error,req,res,next)
+a. Application Level Middleware
+b. Routing Level Middleware
+
+### REST API :- Representational Stateless Transfer
     CRUD
         - Create
             - post("url",callBackFunction(request,response))
