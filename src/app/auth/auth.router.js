@@ -1,76 +1,32 @@
-const express = require("express")
-const authRouter = express()
+const authRouter = require("express").Router()
+const auth = require("../../middleware/auth.middleware")
+const permissionCheck = require("../../middleware/rbac.middleware")
+const { ROLES } = require("../../config/const.config")
+const authCtrl = require("./auth.controller")
+
 // Register A user
-authRouter.post("/register",(req,res,next) => {
-    //email, password
-    res.json({
-        result:null,
-        message:"User Register Successfully",
-        meta:null
-    })
-})
+authRouter.post("/register",authCtrl.registerProcess)
 // Verify the OTP / Token
-authRouter.post("/verify-otp",(req,res,next) => {
-    //email, password
-    res.json({
-        result:null,
-        message:"OTP Verified Successfully",
-        meta:null
-    })
-})
+authRouter.post("/verify-otp",authCtrl.verifyOtp)
 // password-set /activate user
-authRouter.post("/activate/:token",(req,res,next) => {
-    //email, password
-    const params = request.params
-    // result client
-    res.json({
-        result:params,
-        message:"User  Successfully Activated",
-        meta:null
-    })
-})
+authRouter.post("/activate/:token",authCtrl.activateToken)
 // Send Email for Forget Password
-authRouter.post("/forget-password",(req,res,next) => {
-    //email, password
-    res.end("This is forget password Page")
-})
+authRouter.post("/forget-password",authCtrl.forgetPassword)
 // set a new Password 
-authRouter.post("/update-password/:token",(req,res,next) => {
-    //email, password
-    res.end("This is register Page")
-})
+authRouter.post("/update-password/:token",authCtrl.updatePassword)
 // EndPoint or Api
-authRouter.use("/about",(req,res,next) => {
-    res.end("This is About Page")
-})
-authRouter.put("/set-password/:userId",(req,res,next)=>{
-    //userid = userId
-    //userid
-})
+authRouter.use("/about",authCtrl.about)
+authRouter.put("/set-password/:userId",authCtrl.updateUserPassowrd)
 // login 
-authRouter.post("/login",(req,res,next) => {
-    //email, password
-    res.end("This is Login Page")
-})
+authRouter.post("/login",authCtrl.login)
 // logout 
-authRouter.get("/logout",(req,res,next) => {
-    //email, password
-    res.end("This is logout Page")
-})
+authRouter.get("/logout",auth,authCtrl.logout)
 // user profile Access 
-authRouter.get("/me",(req,res,next) => {
-    //email, password
-    res.end("This is user Profile Page")
-})
+authRouter.get("/me",auth,authCtrl.profile)
 // update user by id
-authRouter.put("/user/:userId",(req,res,next) => {
-    //email, password
-    res.end("This is update User Page")
-})
-authRouter.delete("/set-password/:userId",(req,res,next)=>{
-    //userid = userId
-    //userid
-})
+authRouter.put("/user/:userId",auth,permissionCheck(ROLES.ADMIN),authCtrl.updateUser)
+
+authRouter.delete("/set-password/:userId",authCtrl.deleteUser)
 
 
 module.exports = authRouter
