@@ -5,7 +5,8 @@ const permissionCheck = (role)=>{
          // TODO: Check if role is in the currently loggedin user
         next() // next middleware
        } catch (exception) {
-        res.status(403).json()
+        next({code:403, message:"Access Denied.."})
+       // res.status(403).json()
        }
     }
 }

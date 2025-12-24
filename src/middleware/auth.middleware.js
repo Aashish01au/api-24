@@ -3,7 +3,8 @@ const auth = (req,res,next)=>{
      // TODO: LOGIN CHECK
      next() // next middleware
    } catch (exception) {
-    res.status(401).json()
+    next({code:401, message:"Unauthorized"})
+    //res.status(401).json()
    }
 }
 
