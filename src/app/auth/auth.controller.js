@@ -1,20 +1,27 @@
+const Joi = require('joi');
 class AuthController{
-    registerProcess=(req,res,next)=>{
+    registerProcess= async(req,res,next)=>{
         try {
-            // exception free
-            // validaated..
-            // next() // next midleware
-            //nexxt({})
-            throw ""
+           const data = req.body
+           let errorBody = {}
+            const registerSchema = Joi.object({
+                name:Joi.string().min(2).max(35).required(),
+                //.messages({
+                //    "base.string.min":"Name should be atleast 2 character long"
+               // }),
+               // text@text.
+                email:Joi.string().email({tlds:["gmail"]}).required(),
+                role:Joi.string().regex(/^(admin|seller|customer)$/)
+            })
+            const response = await  registerSchema.validateAsync(data)
+           res.json({
+            result:response,
+            message:"Success",
+            meta:null
+           })
         } catch (exception) {
             console.log("RegisterFunc: ", exception)
-            next({
-                code:422, 
-                data:{
-                    name:"Name is requiredd"
-                },
-                message:"Validation Failure"
-            })
+            next(exception)
             //  res.status(422).json({
             //     result:{
             //         name:"Name is required.."

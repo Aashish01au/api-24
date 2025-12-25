@@ -197,6 +197,28 @@ app.use(router)
          // 404 = " not Found"
          // 422 = " Validation "
 ------------------------- [ ---------------------------- ] -----------------------------------
+     //    if(!data.name){
+        //     //throw {data:{name:"Name is required"},code :422, message:"Validation Failure"}
+        //     errorBody["name"]="Name is required"
+        // }
+        //    if(!data.email){
+        //     //throw {data:{email:"email is required"},code :422, message:"Validation Failure"}
+        //     errorBody["email"]="email is required"
+        // }
+        //     if(!data.role){
+        //     //throw {data:{role:"role is required"},code :422, message:"Validation Failure"}
+        //     errorBody["role"]="role is required"
+        // }else if(!["admin","seller","customer"].includes(data.role)){
+        //     //throw {data:{role:"role can only be admin or seller or customer"},code :422, message:"Validation Failure"}
+        //     errorBody["name"]="role can only be admin or seller or customer"
+        // }
+
+        // if(Object.keys(errorBody).length>0){
+        //     throw {data:errorBody,code:422,message:"validation Failure"}
+        // }
+    ------------------------- [ ---------------------------- ]-----------------------------------
+    ------------------------- [ ---------------------------- ] -----------------------------------
+    ------------------------- [ ---------------------------- ] -----------------------------------
 ## HTPP
 ## REST API 
 ## MVC PATTERN
@@ -362,4 +384,13 @@ b. Routing Level Middleware
         - get request ==> endpoint /me
     - User Update
         - put request ==> endpoint /user-update/:userId
+
+# Register User (token/otp process)
+---> Payload get(name,email,role,TODO:iamge)
+        ---> User Register data
+            ---> validate
+                ---> Modeling otp code generate
+                    ---> DB Store
+                        ---> Email / SMS Sent
+                            ---> Response Success
 

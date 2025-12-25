@@ -1,13 +1,18 @@
 const express = require("express")
 const router = require("../routes/router")
 const app = express()
-app.use("/",router)
     // body parsers
         //json
         //form-data
         //x-www-urlencoded
     // url params
     // url query
+app.use(express.json())
+app.use(express.urlencoded({
+    extended:true
+}))
+app.use("/",router)
+
 app.use((req,res,next)=>{
     next({code:404, message:"Page not found.."})
     // res.status(404).json({
@@ -24,6 +29,7 @@ app.use((error,req,res,next)=>{
     let message = error.message ?? "internal Server Error"
 
     // TODO : Error Manipulate
+    // validation failed
     res.status(statusCode).json({
         result:result,
         message:message,
