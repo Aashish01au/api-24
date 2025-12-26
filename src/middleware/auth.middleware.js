@@ -1,9 +1,11 @@
+const UnAuthorized = require("../exception/unAuthorized.exception")
+
 const auth = (req,res,next)=>{
    try {
      // TODO: LOGIN CHECK
      next() // next middleware
    } catch (exception) {
-    next({code:401, message:"Unauthorized"})
+    next(new UnAuthorized())
     //res.status(401).json()
    }
 }

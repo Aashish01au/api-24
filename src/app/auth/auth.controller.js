@@ -1,21 +1,13 @@
-const Joi = require('joi');
+
 class AuthController{
     registerProcess= async(req,res,next)=>{
         try {
            const data = req.body
-           let errorBody = {}
-            const registerSchema = Joi.object({
-                name:Joi.string().min(2).max(35).required(),
-                //.messages({
-                //    "base.string.min":"Name should be atleast 2 character long"
-               // }),
-               // text@text.
-                email:Joi.string().email({tlds:["gmail"]}).required(),
-                role:Joi.string().regex(/^(admin|seller|customer)$/)
-            })
-            const response = await  registerSchema.validateAsync(data)
+            // Flow Definition
+            // DataBase Entry
+            // Email Send
            res.json({
-            result:response,
+            result:data,
             message:"Success",
             meta:null
            })
@@ -76,10 +68,12 @@ class AuthController{
         res.end("This is user updated Page")
     }
 
-    login = (req,res,next) => {
+    login = async (req,res,next) => {
         try {
             // userName, email
             // userName ..
+            let data = req.body
+
         } catch (exception) {
              res.status(422).json({
                 result:{

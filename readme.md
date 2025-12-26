@@ -217,6 +217,18 @@ app.use(router)
         //     throw {data:errorBody,code:422,message:"validation Failure"}
         // }
     ------------------------- [ ---------------------------- ]-----------------------------------
+     // validation failure..
+            // formatting
+            // const errorMsg = {}
+            // exception.details.map((error)=>{
+            //     console.log(error)
+            //     errorMsg[error.path[0]] = error.message
+            //     errorMsg[error.context.label] = error.message
+            //     errorMsg[error.context.key] = error.message
+            // })
+            //console.log(exception)
+            // next({data:errorMsg,code:422, message:"Validation Failure"})
+
     ------------------------- [ ---------------------------- ] -----------------------------------
     ------------------------- [ ---------------------------- ] -----------------------------------
 ## HTPP
@@ -393,4 +405,12 @@ b. Routing Level Middleware
                     ---> DB Store
                         ---> Email / SMS Sent
                             ---> Response Success
+
+## Error Response :-
+    422 ===> Validation Exception with body
+    400 ===> Validation Exception without body
+
+name:
+    ---> String min: 2, max: 35, should be only alpha value with space, and phonnethic sounds characters(a)  
+
 

@@ -1,3 +1,5 @@
+const AccessDenied = require("../exception/accessDenied.exception")
+
 // router.post("/url",permissionCheck())
 const permissionCheck = (role)=>{
     return (req,res,next)=>{
@@ -5,7 +7,7 @@ const permissionCheck = (role)=>{
          // TODO: Check if role is in the currently loggedin user
         next() // next middleware
        } catch (exception) {
-        next({code:403, message:"Access Denied.."})
+        next(new AccessDenied())
        // res.status(403).json()
        }
     }
