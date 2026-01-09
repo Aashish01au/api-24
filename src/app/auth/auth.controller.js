@@ -3,6 +3,7 @@ class AuthController{
     registerProcess= async(req,res,next)=>{
         try {
            const data = req.body
+           data.file = req.file.filename
             // Flow Definition
             // DataBase Entry
             // Email Send

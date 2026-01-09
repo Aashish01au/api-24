@@ -5,9 +5,14 @@ const { ROLES } = require("../../config/const.config")
 const authCtrl = require("./auth.controller")
 const bodyValidator = require("../../middleware/validator.middleware")
 const { registerSchema } = require("./auth.request")
+const uploader = require("../../config/uploader.middleware")
 
 // Register A user
-authRouter.post("/register",bodyValidator(registerSchema),authCtrl.registerProcess)
+authRouter.post("/register",
+uploader.single("profile")
+//uploader.array("conver")
+//uploader.none()
+,bodyValidator(registerSchema),authCtrl.registerProcess)
 // Verify the OTP / Token
 authRouter.post("/verify-otp",authCtrl.verifyOtp)
 // password-set /activate user
