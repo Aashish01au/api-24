@@ -413,4 +413,22 @@ b. Routing Level Middleware
 name:
     ---> String min: 2, max: 35, should be only alpha value with space, and phonnethic sounds characters(a)  
 
+# Token / OTP  Flow :-
+                                            status = inactive
+- Data --> Validate --> (Token generate) --> Modeling --> DB Store --> Notification
+                        --> Notification email
+                        --> Notification email / SMS
+                            --> email --> SMTP (Verify Sending Domain)
+                            --> SMS --> Country / International GSM Services (Purchased package)
+                                        --> NTC / NCELL / SMARTCELL 
 
+# Login Flow :- 
+- Data --> validate --> Db Check 
+                        --> email , status = active
+
+# node Server                   SMTP Server (live, testing ---> fake Server)
+connection ---------------------> Acknowledgement
+           <-------------------- 
+Email Data ---------------------> verify sender ---> verify ---> Queue 
+                                    ----> Process ===> Receiver Mail Send(Internet)
+Email Send <-------------------- Acknowledgement <--- 

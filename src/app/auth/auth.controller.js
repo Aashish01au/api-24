@@ -1,17 +1,48 @@
+const AppError = require("../../exception/app.exception")
+const emailSvc = require("../../services/email.services")
+const { randomString } = require("../../utilities/helpers")
 
 class AuthController{
     registerProcess= async(req,res,next)=>{
         try {
            const data = req.body
            data.file = req.file.filename
-            // Flow Definition
+           //Activation 
+           //data.activation = randomString(100) //  expiry ==> longer ---> 2hr
+            data.otp = randomString(6) // expiry ==> short ---> 2min
+            const timeAfterTwoHours = new Date(Date.now()+(60*2*60*100));
+            // new Date()  // thur 01 feb, 2024 06:30:25.200T+5:45;
+            data.expiryTime = timeAfterTwoHours 
+            data.status = "inactive"
+            let userRegister = data
+            if(userRegister){
+                // Success Call
+              const response =  await emailSvc.sendEmail({
+                    to:data.email,
+                    subject:"Activate your Account",
+                    message:`
+                    Dear ${data.name}, </br>
+                    Your OTP Code is : <b>${data.otp}, </b></br>
+                    Your OTP Code is going to expire on : <b>${data.expiryTime} ,</b></br>
+                    Please Verify Your Account within 2 hours </br>
+                    <p> Regards,</p>
+                    <p> System Administrator,</p>
+                    <p> <small><em>please do not reply to this email.</em></small></p>
+                    `
+                })
+                  // Flow Definition
             // DataBase Entry
             // Email Send
            res.json({
-            result:data,
-            message:"Success",
+            result:response,
+            message:"test mail",
             meta:null
            })
+            }else{
+                // Call Failed 
+                throw new AppError({data:null, message:"Validation Failure", code : 400})
+            }
+          
         } catch (exception) {
             console.log("RegisterFunc: ", exception)
             next(exception)
