@@ -1,7 +1,7 @@
 const AppError = require("../../exception/app.exception")
 const emailSvc = require("../../services/email.services")
 const { randomString } = require("../../utilities/helpers")
-
+const bcrypt = require("bcryptjs")
 class AuthController{
     registerProcess= async(req,res,next)=>{
         try {
@@ -14,9 +14,14 @@ class AuthController{
             // new Date()  // thur 01 feb, 2024 06:30:25.200T+5:45;
             data.expiryTime = timeAfterTwoHours 
             data.status = "inactive"
+            // DataBase entry
+            // DB Exception
+            // TODO : User Entry
             let userRegister = data
             if(userRegister){
                 // Success Call
+                // https://abc.com ===> gmail.com ===> link ===> abc.com
+                // https://localhost:5173/verify/token
               const response =  await emailSvc.sendEmail({
                     to:data.email,
                     subject:"Activate your Account",
@@ -34,7 +39,7 @@ class AuthController{
             // DataBase Entry
             // Email Send
            res.json({
-            result:response,
+            result:userRegister,
             message:"test mail",
             meta:null
            })
@@ -57,25 +62,56 @@ class AuthController{
     }
     verifyOtp = (req,res,next) => {
         //email, password
+        // Send Verify OTP
+        const userDetail = {
+            "name": "aashish",
+            "email": "aashish@gmail.com",
+            "role": "admin",
+            "file": "1768156837697-2xR4NI0vNF.jpg",
+            "otp": "KS3SE7",
+            "expiryTime": "2026-01-11T18:52:37.711Z",
+            "status": "inactive",
+            "authToken" :randomString(100)
+        } 
+        
         res.json({
-            result:null,
-            message:"OTP Verified Successfully",
+            result:userDetail,
+            message:"Your OTP has Verified",
             meta:null
         })
     }
 
     activateToken = (req,res,next) => {
+        try {
         //email, password
-        const params = request.params
-        const query = req.query
-
-        const body = req.body
+        // const params = request.params
+        // const query = req.query
+        // const body = req.body
         // result client
+        const token = req.params.token
+        const password = req.body.password
+        const hash = bcrypt.hashSync(password,10)
+        const userDetail = {
+            "name": "aashish",
+            "email": "aashish@gmail.com",
+            "role": "admin",
+            "file": "1768156837697-2xR4NI0vNF.jpg",
+            "otp": null,
+            "expiryTime": null,
+            "status": "active",
+            "authToken" :null,
+            password:hash
+        } 
+        // bcrypt
         res.json({
-            result:params,
-            message:"User  Successfully Activated",
+            result:userDetail,
+            message:"Your Password has been set successfully",
             meta:null
         })
+        } catch (exception) {
+            console.log(exception)
+            throw new AppError({data:exception, message:"Activation Failed", code : 500})
+        }
     }
 
     forgetPassword = (req,res,next) => {
@@ -105,15 +141,37 @@ class AuthController{
             // userName, email
             // userName ..
             let data = req.body
+            // TODO : DB Details
+            let userDetails = {
+                "name": "aashish",
+                "email": "aashish@gmail.com",
+                "role": "admin",
+                "file": "1768156837697-2xR4NI0vNF.jpg",
+                "otp": null,
+                "expiryTime": null,
+                "status": "active",
+                "authToken" :null,
+                password:"$2b$10$8HuPEfs0btcLfjMHpLf.3uGP285q6FBxpvF3Z9RAS0XSzREfpDhYi"
+            } 
 
+            const verify = bcrypt.compareSync(data.password, userDetails.password)
+            if(verify){
+                // TODO : JWT Generate
+                res.json({
+                    result:{
+                        token:"",
+                        type : "Bearer",
+                       refreshToken:"" 
+                    },
+                    message:"You are loggedIn Succeessfully",
+                    meta :null
+                })
+            }else{
+                throw new AppError({data:null, message:"Credentails Does not matched",code:400})
+            }
         } catch (exception) {
-             res.status(422).json({
-                result:{
-                    email:"User Does  not exist"
-                },
-                message:"validation Failure..",
-                meta:null
-            })
+            console.log("Login:",exception)
+             next(exception)
         }
     }
 

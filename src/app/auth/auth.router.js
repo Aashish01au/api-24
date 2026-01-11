@@ -4,7 +4,7 @@ const permissionCheck = require("../../middleware/rbac.middleware")
 const { ROLES } = require("../../config/const.config")
 const authCtrl = require("./auth.controller")
 const bodyValidator = require("../../middleware/validator.middleware")
-const { registerSchema } = require("./auth.request")
+const { registerSchema, otpverifySchema, passwordSetSchema } = require("./auth.request")
 const uploader = require("../../config/uploader.middleware")
 
 // Register A user
@@ -14,9 +14,9 @@ uploader.single("profile")
 //uploader.none()
 ,bodyValidator(registerSchema),authCtrl.registerProcess)
 // Verify the OTP / Token
-authRouter.post("/verify-otp",authCtrl.verifyOtp)
+authRouter.post("/verify-otp",bodyValidator(otpverifySchema),authCtrl.verifyOtp)
 // password-set /activate user
-authRouter.post("/activate/:token",authCtrl.activateToken)
+authRouter.post("/activate/:token",bodyValidator(passwordSetSchema),authCtrl.activateToken)
 // Send Email for Forget Password
 authRouter.post("/forget-password",authCtrl.forgetPassword)
 // set a new Password 
