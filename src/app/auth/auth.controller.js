@@ -1,7 +1,9 @@
+require("dotenv").config()
 const AppError = require("../../exception/app.exception")
 const emailSvc = require("../../services/email.services")
 const { randomString } = require("../../utilities/helpers")
 const bcrypt = require("bcryptjs")
+const jwt = require("jsonwebtoken")
 class AuthController{
     registerProcess= async(req,res,next)=>{
         try {
@@ -143,6 +145,7 @@ class AuthController{
             let data = req.body
             // TODO : DB Details
             let userDetails = {
+                "_id":"hexacode--->ObjectId",
                 "name": "aashish",
                 "email": "aashish@gmail.com",
                 "role": "admin",
@@ -157,11 +160,23 @@ class AuthController{
             const verify = bcrypt.compareSync(data.password, userDetails.password)
             if(verify){
                 // TODO : JWT Generate
+                const playLoad = {id:userDetails._id}
+                //const signature = "secret"
+                const token = jwt.sign(playLoad,process.env.JWT_SECRET,{
+                    // you can send any data type like number, string, date&time --> default time = 3hr
+                    expiresIn:Date.now()+7200000,
+                   // algorithm:"ES512"
+                })
+                const refreshToken = jwt.sign(playLoad,process.env.JWT_SECRET,{
+                    // you can send any data type like number, string, date&time --> default time = 3hr
+                    expiresIn:"1 day",
+                   // algorithm:"ES512"
+                })
                 res.json({
                     result:{
-                        token:"",
+                        token:token,
                         type : "Bearer",
-                       refreshToken:"" 
+                       refreshToken:refreshToken 
                     },
                     message:"You are loggedIn Succeessfully",
                     meta :null
@@ -182,7 +197,13 @@ class AuthController{
 
     profile = (req,res,next) => {
         //email, password
-        res.end("This is user Profile Page")
+        let user = req.authUser
+        //res.end("This is user Profile Page")
+        res.json({
+            result:user,
+            message:"User profile",
+            meta:null
+        })
     }
 
     updateUser = (req,res,next) => {
