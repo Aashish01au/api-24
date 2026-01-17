@@ -432,3 +432,64 @@ connection ---------------------> Acknowledgement
 Email Data ---------------------> verify sender ---> verify ---> Queue 
                                     ----> Process ===> Receiver Mail Send(Internet)
 Email Send <-------------------- Acknowledgement <--- 
+
+### STORAGE :-
+## - File System Json, CSV, EXCELL
+## - DATABASE Server :-
+        - Format / Systematic Order 
+        - Process Manipulate
+                ---> Relational DBMS
+                     ===> SQL ---> mySQL, Postgresql, mssql, oracle
+                     - table
+                        row-column
+                    i.e :-
+                        user ==> Seller 
+
+                        product ==> Seller
+
+                        product --> Order --> Customer
+
+                        Seller :- i.e of e-commerce
+                            Order
+                                product
+                                    seller 
+                                customer
+
+                        Customer :-
+                ---> Non - Relational DBMS
+                     ===> Non-SQL ---> mongodb, couchdb, orientdb, marklogic Server
+                     - document
+                     - Redundacy
+### DATABASE Package:-
+## MONGODB
+    --> Store in the form of document(json)
+
+    --> mongodb core driver
+    --> mongoose ODM provider
+
+## pgsql 
+    --> pgsql, mysql, mssql, oracle
+        --> sequelize
+        --> typeorm(ts(typeScript))
+        --> prism (js(javaScript)/ts(typeScript))
+        --> ORM
+        
+## MONGODB Storaging Facility :-
+    - Free
+        ---> 1 account 512mb of storage
+        ---> configure
+            - 1vcpu , 128mb ram
+            - mongodb latest host
+
+    - enterprise
+        - you can customize everything according to ur own need like ram, storage, cpu, etc...
+    // VPS(virtual Private Server) 
+
+## For connecting any Server we need :-
+    protocol                        mongodb
+    host                            127.0.0.1, localhost ==> ipv6 ---> default value ::1
+    port                            27017
+    auth        
+        username                    not required
+        password                    not required
+
