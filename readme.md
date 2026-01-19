@@ -493,3 +493,117 @@ Email Send <-------------------- Acknowledgement <---
         username                    not required
         password                    not required
 
+
+# Protocol 
+    localhost : mongodb
+    Atals : mongodb+src
+# Host 
+    localhost : 127.0.0.1
+    Atals : @aashish.ratepyj.mongodb.net/
+# Port 
+    localhost : 27017
+    Atlas : 27017
+# user 
+    localhost : not needed
+    Atals : <DBUserName>
+# password 
+    localhost : not needed
+    Atals : <DBUserPassword>
+
+# DataBase
+    Table ---> Collection
+    Row ---> Document
+    (Dataset)
+    Column ---> Key
+
+# BSON Data Type (Binary Script Object Notion)
+# CRUD
+    Create :
+        - insertOne(Object)
+        - insertMany([Objects])
+
+        e.g for Code :- 
+            - <activeDbConnectionObj>.collection("users").insert() --> Depricated this function at Version 6 
+            - <activeDbConnectionObj>.collection("users").insertOne()
+            - <activeDbConnectionObj>.collection("users").insertMany()
+        
+        e.g for Shell :-
+            - db.collection.insertOne()
+            - db.collection.insertMany([{},{}...])
+# Read 
+    - find(filter,projection,options)
+    - findOne(filter,projection,options)
+# Update 
+    - update(filter,updateBody,options)
+    - updateOne(filter,updateBody,options)
+# Delete 
+    - delete(filter,projection,options)
+    - deleteOne(filter,projection,options)
+[
+    {
+            "name": "aashish",
+            "email": "aashish+admin@gmail.com",
+            "role": "admin",
+            "file": "1768156837697-2xR4NI0vNF.jpg",
+            "otp": null,
+            "expiryTime": null,
+            "status": "active",
+            "authToken" :null,
+            "password":"hash"
+        } ,
+        {
+            "name": "aashish",
+            "email": "balram+seller@gmail.com",
+            "role": "admin",
+            "file": "1768156837697-2xR4NI0vNF.jpg",
+            "otp": null,
+            "expiryTime": null,
+            "status": "active",
+            "authToken" :null,
+            "password":"hash"
+        } ,
+        {
+            "name": "aashish",
+            "email": "balram+admin@gmail.com",
+            "role": "admin",
+            "file": "1768156837697-2xR4NI0vNF.jpg",
+            "otp": null,
+            "expiryTime": null,
+            "status": "active",
+            "authToken" :null,
+            "password":"hash"
+        } ,
+        {
+            "name": "aashish",
+            "email": "aashish+admin@gmail.com",
+            "role": "admin",
+            "file": "1768156837697-2xR4NI0vNF.jpg",
+            "otp": null,
+            "expiryTime": null,
+            "status": "active",
+            "authToken" :null,
+            "password":"hash"
+        } ,
+        {
+            "name": "aashish",
+            "email": "aashish+custiomoer@gmail.com",
+            "role": "admin",
+            "file": "1768156837697-2xR4NI0vNF.jpg",
+            "otp": null,
+            "expiryTime": null,
+            "status": "active",
+            "authToken" :null,
+            "password":"hash"
+        } ,
+        {
+            "name": "aashish",
+            "email": "aashish+seller@gmail.com",
+            "role": "admin",
+            "file": "1768156837697-2xR4NI0vNF.jpg",
+            "otp": null,
+            "expiryTime": null,
+            "status": "active",
+            "authToken" :null,
+            "password":"hash"
+        } 
+]   

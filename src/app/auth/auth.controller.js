@@ -95,14 +95,14 @@ class AuthController{
         const hash = bcrypt.hashSync(password,10)
         const userDetail = {
             "name": "aashish",
-            "email": "aashish@gmail.com",
+            "email": "aashish+admin@gmail.com",
             "role": "admin",
             "file": "1768156837697-2xR4NI0vNF.jpg",
             "otp": null,
             "expiryTime": null,
             "status": "active",
             "authToken" :null,
-            password:hash
+            "password":hash
         } 
         // bcrypt
         res.json({
@@ -154,7 +154,7 @@ class AuthController{
                 "expiryTime": null,
                 "status": "active",
                 "authToken" :null,
-                password:"$2b$10$8HuPEfs0btcLfjMHpLf.3uGP285q6FBxpvF3Z9RAS0XSzREfpDhYi"
+                "password":"$2b$10$8HuPEfs0btcLfjMHpLf.3uGP285q6FBxpvF3Z9RAS0XSzREfpDhYi"
             } 
 
             const verify = bcrypt.compareSync(data.password, userDetails.password)
