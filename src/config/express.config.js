@@ -1,5 +1,6 @@
 const express = require("express")
 const router = require("../routes/router")
+require("./mongodb.config")
 const app = express()
     // body parsers
         //json

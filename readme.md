@@ -539,7 +539,7 @@ Email Send <-------------------- Acknowledgement <---
 # Delete 
     - delete(filter,projection,options)
     - deleteOne(filter,projection,options)
-[
+db.users.insertMany([
     {
             "name": "aashish",
             "email": "aashish+admin@gmail.com",
@@ -575,7 +575,7 @@ Email Send <-------------------- Acknowledgement <---
         } ,
         {
             "name": "aashish",
-            "email": "aashish+admin@gmail.com",
+            "email": "aashish@gmail.com",
             "role": "admin",
             "file": "1768156837697-2xR4NI0vNF.jpg",
             "otp": null,
@@ -606,4 +606,95 @@ Email Send <-------------------- Acknowledgement <---
             "authToken" :null,
             "password":"hash"
         } 
-]   
+]   )
+
+db.users.insertOne({
+            "name": "aashish",
+            "email": "balram@gmail.com",
+            "role": "admin",
+            "file": "1768156837697-2xR4NI0vNF.jpg",
+            "status": "active",
+            "password":"hash"
+        } )
+### Filter 
+    -> Where clause
+        -> conditions
+            -> json format
+
+                e.g :- db.users.find({role:"seller",status:"active"})
+                SQL :
+                --> Select * From user Where role = "seller" AND Status == "active"
+
+            $gt ===> greater than 
+            $gte ===> greater than or equal to 
+            $lt ===> less than
+            $lte ===> less than or equal to
+            $eq ===> equal to
+            $ne ===> not equal to 
+            $or ===> Or Operation 
+            $and ===> And Operation 
+            $in ===> In Operation
+            $nin ===> Not in operation 
+
+            i.e :-
+            {<key>:{$ge:<value>}} //  $gt, $gte,  $lt,  $lte,  $eq,  $ne, 
+            {<key>:{$in:[value]}}  // $in, $nin
+            {$and:[                 // $and , $or
+                {<key>:<value>},
+                {<key>:<value>}
+            ]} 
+            OR
+            {<key>:<value>,   
+                <key>:<value>}
+### Projection 
+    {<key>:1 or 0} ==> 1 specify = true/ fetch, 0 specify = false/ do not select
+        e.g:-
+            db.users.find({},{name:1})
+            ---> SELECT _ID, NAME form users
+        e.g:-
+            db.users.find({role:"admin"},{name:1,_id:0})
+            ---> SELECT NAME form users where role = "admin"
+### Optional
+    {sort:{<key>:<1 or -1 or ASC or Desc or >},limit :<number>,skip:<number>,{upsert:true} // if not exist then  auto create data} 
+    {<key>:1, -1, "String"}
+        e.g:-
+            db.users.find({},{name:1,_id:0},{sort:1}) 
+                ---> SELECT NAME form users and giving data in ascending Order
+            db.users.find({},{name:1,_id:0},{sort:-1})
+                ---> SELECT NAME form users and giving data in descending Order
+            db.users.find({},{name:1,_id:0},{sort:"asc"})
+                ---> SELECT NAME form users and giving data in ascending Order
+            db.users.find({},{name:1,_id:0},{sort:"asc"},{limit:2})
+                ---> SELECT NAME form users and giving data in ascending Order and also giving only 2 data  
+            db.users.find({},{name:1,_id:0},{sort:"asc"},{limit:2},{skip:3})
+            
+### ODM :- Object Document Module
+        - Mongoose 
+            - Model
+        - Mongodb
+            ---> table/ Column
+            ---> App use
+        
+        - Mongoose 
+            ---> ORM/ODM (Object Relational Module)
+                    ---> Physical DB Server tables/collections ---> Data Structure Bind
+### MODEL / Entity
+    ---> table link with model class
+    ---> Snake Case
+        RULES :-
+            1. Model Name ==> Singular form of Tables\ name
+                e.g:-
+                    collection/tables ===> users
+                    Model Name ===> User
+            2. All the property of model/entity ===> key/column name of table
+                e.g:-
+                    columnNames ===> name, email, role, password....
+                    Model Properties ===> name, email, role, password....
+            3. Every model/entity instance(object) will always points to a row in db
+                e.g:-
+                    User model name 
+                    const userObj = new User() ---> Points to a new row in db
+                    // insert/ save operation
+
+
+

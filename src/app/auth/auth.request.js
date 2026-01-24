@@ -21,7 +21,11 @@ let passwordSetSchema = Joi.object({
     confirmPassword:Joi.string().valid(Joi.ref("password")).required().messages({
         "any.only":"Password and confirmPassword must match"
     })
+
+    
 })
+
+
 module.exports = {
     registerSchema,
     loginSchema,
