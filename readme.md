@@ -696,5 +696,200 @@ db.users.insertOne({
                     const userObj = new User() ---> Points to a new row in db
                     // insert/ save operation
 
+** Step-1 ===> Connect our DB Server
+### Structure DB:-
+- Identification of the entity/model
+- Requirement based
+    - Ecommerce:-
+        - Relations
+
+// Authrization
+enum userRoles{
+  admin
+  seller
+  customer
+}
+enum status{
+  active
+  inactive
+}
+table users{
+  _id objectId [primary key]
+  name string
+  email string [unique]
+  password string [default:null]
+  otp string
+  forgetToken string
+  expiryTime datetime
+  authToken string
+  address string
+  role userRoles [default: "customer"]
+  status status [default: "inactive"]
+  createdBy objectId [ref: > users._id]
+  updatedBy objectId [ref: > users._id]
+  createdAt datetime
+  updatedAt datetime
+}
+
+table banners {
+  _id objectId [primary key]
+  image string
+  title string
+  link string
+  status status [default: "inactive"]
+  createdBy objectId [ref: > users._id]
+  updatedBy objectId [ref: > users._id]
+  createdAt datetime
+  updatedAt datetime
+
+}
+table brands {
+  _id objectId [primary key]
+  logo string
+  name string
+  slug string [unique]
+  status status [default: "inactive"]
+  createdBy objectId [ref: > users._id]
+  updatedBy objectId [ref: > users._id]
+  createdAt datetime
+  updatedAt datetime
+
+}
+table categories {
+  _id objectId [primary key]
+  name string
+  slug string [unique]
+  primaryCat objectId [ref: - categories._id ]
+  status status [default: "inactive"]
+  showInHome boolean [default: false]
+  showInMenu boolean [default: false]
+  createdBy objectId [ref: > users._id]
+  updatedBy objectId [ref: > users._id]
+  createdAt datetime
+  updatedAt datetime
+
+}
+table products {
+  _id objectId [primary key]
+  name string
+  slug string [unique]
+  // Multiples categories
+  categories objectId [ref: < categories._id ]
+  summary text
+  description text
+  price number
+  // falt number
+  discount number [default: 0]
+  afterDiscount number
+  // color/ size ==> [" "]
+  attributes json
+  tags json
+  stock number
+  sku number
+  brand objectId [ref:- brands._id]
+  sellerId objectId [ref: < users._id]
+  status status [default: "inactive"]
+  showInHome boolean [default: false]
+  showInMenu boolean [default: false]
+  createdBy objectId [ref: > users._id]
+  updatedBy objectId [ref: > users._id]
+  createdAt datetime
+  updatedAt datetime
+}
+enum orderStatus {
+  new
+  process
+  canceled
+  delivered
+}
+
+table carts {
+  _id objectId [primary key]
+  buyerId objectId [ref:- users._id]
+  productId objectId [ref: - products._id]
+  sellerId objectId [ref:- users._id]
+  price number
+  qty number [default: 1]
+  isOrderd boolean [default: false]
+  status orderStatus [default:  "new"]
+  isPaid boolean [default: false]
+  createdAt datetime
+  updatedAt datetime
+}
+
+table orders {
+  _id objectId [primary key]
+  billNo serial 
+  buyerId objectid [ref:> users._id]
+  cartDetails json //cartIds
+  subTotal number
+  discount number [default: 0]
+  tax number [default: 0] // print bill
+  totalAmount number
+  status orderStatus [default:  "new"]
+  isPaid boolean [default: false]
+  createdAt datetime
+  updatedAt datetime
+}
+
+enum paymentType {
+  cash
+  esewa
+  bank
+  khalti
+  paypal
+  connectIps
+  visa
+}
+// Add on features
+table transactions{
+  _id objectId [primary key]
+  buyerId objectId [ref : - users._id]
+  orderId objectId [ref : - orders._id]
+  transactionCode string
+  amount number
+  data json
+  paymentType paymentType [default: "cash"]
+  createdAt datetime
+}
+
+table offers {
+  _id objectId [primary key]
+  name string
+  startDate datetime
+  endDate datetime
+  status status [default: "inactive"]
+  createdBy objectId [ref: > users._id]
+  updatedBy objectId [ref: > users._id]
+  createdAt datetime
+  updatedAt datetime
+}
+
+table offerProducts{
+  _id objectId [primary key]
+  offerId objectId [ref : < offers._id]
+  productId objectId [ref : - products._id]
+  price number 
+  discount number
+  createdAt datetime
+  upadtedAt datetime
+}
+
+table blogs{
+  _id objectId [primary key]
+  title string
+  summary text
+  description text
+  image string
+  // categories
+  // tags
+  createdBy objectId [ref: > users._id]
+  updatedBy objectId [ref: > users._id]
+  createdAt datetime
+  updatedAt datetime
+}
+### ATLASSIAN.COM
+### TASK
+ - Entity Identify
 
 

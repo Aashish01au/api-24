@@ -4,45 +4,21 @@ const emailSvc = require("../../services/email.services")
 const { randomString } = require("../../utilities/helpers")
 const bcrypt = require("bcryptjs")
 const jwt = require("jsonwebtoken")
+const authSvc = require("./auth.services")
+const e = require("express")
 class AuthController{
     registerProcess= async(req,res,next)=>{
         try {
-           const data = req.body
-           data.file = req.file.filename
-           //Activation 
-           //data.activation = randomString(100) //  expiry ==> longer ---> 2hr
-            data.otp = randomString(6) // expiry ==> short ---> 2min
-            const timeAfterTwoHours = new Date(Date.now()+(60*2*60*100));
-            // new Date()  // thur 01 feb, 2024 06:30:25.200T+5:45;
-            data.expiryTime = timeAfterTwoHours 
-            data.status = "inactive"
-            // DataBase entry
-            // DB Exception
-            // TODO : User Entry
-            let userRegister = data
+           const data = authSvc.transformdataToRegister(req.body,req.file)
+            const userRegister = await authSvc.registerUser(data)
             if(userRegister){
-                // Success Call
-                // https://abc.com ===> gmail.com ===> link ===> abc.com
-                // https://localhost:5173/verify/token
-              const response =  await emailSvc.sendEmail({
-                    to:data.email,
-                    subject:"Activate your Account",
-                    message:`
-                    Dear ${data.name}, </br>
-                    Your OTP Code is : <b>${data.otp}, </b></br>
-                    Your OTP Code is going to expire on : <b>${data.expiryTime} ,</b></br>
-                    Please Verify Your Account within 2 hours </br>
-                    <p> Regards,</p>
-                    <p> System Administrator,</p>
-                    <p> <small><em>please do not reply to this email.</em></small></p>
-                    `
-                })
+               await authSvc.sendRegsiterEmail(data.email,data.name,data.otp,data.expiryTime)
                   // Flow Definition
             // DataBase Entry
             // Email Send
            res.json({
             result:userRegister,
-            message:"test mail",
+            message:"Your account has been successfully regisered. Please check your email to activate your account",
             meta:null
            })
             }else{
@@ -62,20 +38,55 @@ class AuthController{
             // })
         }
     }
-    verifyOtp = (req,res,next) => {
+    verifyOtp = async (req,res,next) => {
         //email, password
         // Send Verify OTP
-        const userDetail = {
-            "name": "aashish",
-            "email": "aashish@gmail.com",
-            "role": "admin",
-            "file": "1768156837697-2xR4NI0vNF.jpg",
-            "otp": "KS3SE7",
-            "expiryTime": "2026-01-11T18:52:37.711Z",
-            "status": "inactive",
-            "authToken" :randomString(100)
-        } 
-        
+        // const userDetail = {
+        //     "name": "aashish",
+        //     "email": "aashish@gmail.com",
+        //     "role": "admin",
+        //     "file": "1768156837697-2xR4NI0vNF.jpg",
+        //     "otp": "KS3SE7",
+        //     "expiryTime": "2026-01-11T18:52:37.711Z",
+        //     "status": "inactive",
+        //     "authToken" :randomString(100)
+        // } 
+        try {
+            const {email,otp} = req.body
+            const userdetail = await authSvc.verifyOtpCode({
+            email:email,
+            otp:otp
+                })
+            if(!userdetail){
+                next({message:"incorrect OTP", code:400})
+            }else{
+                const now = Date.now()  // gives you TimeStamp 
+                const expiryTime = userdetail.expiryTime.getTime() // getTime() ===> Convert time into UTC
+                if(expiryTime<now){
+                    throw new AppError({message:"OTP is expired // Token is Expired", code:400})
+                }else{
+                    const token = randomString(100)
+                    const response= await authSvc.updateUser(userdetail._id,{
+                        authToken:token,
+                        expiryTime:new Date(Date.now()+(60*2*60*1000)),
+                        otp:null
+                    })
+
+                  if(response){
+                    res.json({
+                        result:token,
+                        message:"OTP code verified",
+                        meta:null
+                    })
+                  }else{
+                    throw new AppError({message:"User Does not found", code:400})
+                  }
+                }
+            }
+        } catch (exception) {
+            console.log("VerifyOtp:",exception)
+            next(exception)
+        }
         res.json({
             result:userDetail,
             message:"Your OTP has Verified",
